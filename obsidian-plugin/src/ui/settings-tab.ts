@@ -10,6 +10,7 @@ export interface AuroraOntologySettings {
   topK: number;
   minSimilarity: number;
   autoQuery: boolean;
+  autoSync: boolean;
   showSimilarityScores: boolean;
 }
 
@@ -18,6 +19,7 @@ export const DEFAULT_SETTINGS: AuroraOntologySettings = {
   topK: 5,
   minSimilarity: 0.3,
   autoQuery: true,
+  autoSync: true,
   showSimilarityScores: true,
 };
 
@@ -69,20 +71,12 @@ export class AuroraOntologySettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName('Re-index Insights')
-      .setDesc('Re-index all Insight notes in the vault')
+      .setName('Sync All Insights')
+      .setDesc('Upload all Insight notes to the server')
       .addButton((button) =>
-        button.setButtonText('Re-index').onClick(async () => {
-          try {
-            const vaultPath = (this.app.vault.adapter as any).basePath;
-            const result = await this.plugin.apiClient.reindexInsights({
-              vault_path: vaultPath,
-            });
-            new Notice(
-              `Indexed ${result.indexed_count} insights. ${result.errors.length} errors.`
-            );
-          } catch (error) {
-            new Notice(`Re-index failed: ${error}`);
+        button.setButtonText('Sync Now').onClick(async () => {
+          if (this.plugin.syncService) {
+            await this.plugin.syncService.syncAllInsights(true);
           }
         })
       );
@@ -123,12 +117,24 @@ export class AuroraOntologySettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName('Auto Query')
-      .setDesc('Automatically query for related Insights when saving Question notes')
+      .setDesc('Automatically query for related Insights when opening Question notes')
       .addToggle((toggle) =>
         toggle
           .setValue(this.plugin.settings.autoQuery)
           .onChange(async (value) => {
             this.plugin.settings.autoQuery = value;
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(containerEl)
+      .setName('Auto Sync')
+      .setDesc('Automatically sync Insight notes to the server when modified (requires restart)')
+      .addToggle((toggle) =>
+        toggle
+          .setValue(this.plugin.settings.autoSync)
+          .onChange(async (value) => {
+            this.plugin.settings.autoSync = value;
             await this.plugin.saveSettings();
           })
       );

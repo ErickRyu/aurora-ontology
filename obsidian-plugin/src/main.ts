@@ -12,6 +12,7 @@ import {
 } from 'obsidian';
 
 import { ApiClient } from './services/api-client';
+import { InsightSyncService } from './services/insight-sync';
 import { isQuestionNote, parseFrontmatter } from './services/note-classifier';
 import {
   AuroraOntologySettings,
@@ -26,6 +27,7 @@ import {
 export default class AuroraOntologyPlugin extends Plugin {
   settings: AuroraOntologySettings = DEFAULT_SETTINGS;
   apiClient: ApiClient = new ApiClient(DEFAULT_SETTINGS.serverUrl);
+  syncService: InsightSyncService | null = null;
   private insightPanel: InsightPanelView | null = null;
 
   async onload(): Promise<void> {
@@ -36,6 +38,9 @@ export default class AuroraOntologyPlugin extends Plugin {
 
     // Initialize API client with saved settings
     this.apiClient = new ApiClient(this.settings.serverUrl);
+
+    // Initialize sync service
+    this.syncService = new InsightSyncService(this.app.vault, this.apiClient);
 
     // Register view
     this.registerView(
@@ -83,6 +88,16 @@ export default class AuroraOntologyPlugin extends Plugin {
       },
     });
 
+    this.addCommand({
+      id: 'sync-all-insights',
+      name: 'Sync All Insights to Server',
+      callback: async () => {
+        if (this.syncService) {
+          await this.syncService.syncAllInsights(true);
+        }
+      },
+    });
+
     // Add settings tab
     this.addSettingTab(new AuroraOntologySettingTab(this.app, this));
 
@@ -107,6 +122,41 @@ export default class AuroraOntologyPlugin extends Plugin {
         }
       })
     );
+
+    // Register Insight sync events
+    if (this.settings.autoSync) {
+      this.registerEvent(
+        this.app.vault.on('create', (file) => {
+          if (this.syncService) {
+            this.syncService.onFileCreate(file);
+          }
+        })
+      );
+
+      this.registerEvent(
+        this.app.vault.on('modify', (file) => {
+          if (this.syncService) {
+            this.syncService.onFileModify(file);
+          }
+        })
+      );
+
+      this.registerEvent(
+        this.app.vault.on('delete', (file) => {
+          if (this.syncService) {
+            this.syncService.onFileDelete(file);
+          }
+        })
+      );
+
+      this.registerEvent(
+        this.app.vault.on('rename', (file, oldPath) => {
+          if (this.syncService) {
+            this.syncService.onFileRename(file, oldPath);
+          }
+        })
+      );
+    }
 
     // Activate panel on startup if it was open
     this.app.workspace.onLayoutReady(() => {
