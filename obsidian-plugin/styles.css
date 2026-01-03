@@ -1,0 +1,245 @@
+/* Aurora Ontology Plugin Styles */
+
+/* Panel Base */
+.aurora-insight-panel {
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.aurora-panel-header {
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.aurora-panel-header h4 {
+  margin: 0;
+  color: var(--text-accent);
+}
+
+/* Loading State */
+.aurora-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: var(--text-muted);
+}
+
+.aurora-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--background-modifier-border);
+  border-top-color: var(--text-accent);
+  border-radius: 50%;
+  animation: aurora-spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes aurora-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Empty State */
+.aurora-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.aurora-hint {
+  font-size: 0.85em;
+  margin-top: 8px;
+}
+
+/* Sections */
+.aurora-section {
+  margin-bottom: 24px;
+}
+
+.aurora-section h5 {
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.aurora-no-results {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Insight Items */
+.aurora-insight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aurora-insight-item {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.aurora-insight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.aurora-insight-path {
+  font-weight: 500;
+  color: var(--text-accent);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.aurora-insight-path:hover {
+  text-decoration: underline;
+}
+
+.aurora-similarity {
+  font-size: 0.8em;
+  padding: 2px 8px;
+  background: var(--background-modifier-border);
+  border-radius: 12px;
+  color: var(--text-muted);
+}
+
+.aurora-insight-preview {
+  font-size: 0.9em;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Question Items */
+.aurora-question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aurora-question-item {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid var(--background-modifier-border);
+  position: relative;
+}
+
+.aurora-badge {
+  display: inline-block;
+  font-size: 0.75em;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.aurora-badge-memory_invoke {
+  background: var(--color-blue);
+  color: white;
+}
+
+.aurora-badge-conflict_detect {
+  background: var(--color-orange);
+  color: white;
+}
+
+.aurora-badge-amplify {
+  background: var(--color-purple);
+  color: white;
+}
+
+.aurora-quote {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--text-accent);
+  background: var(--background-primary);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.aurora-ref-link {
+  font-size: 0.8em;
+  color: var(--text-accent);
+  cursor: pointer;
+}
+
+.aurora-question-text {
+  margin: 8px 0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.aurora-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.75em;
+  padding: 4px 8px;
+  background: var(--background-modifier-border);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.aurora-copy-btn:hover {
+  background: var(--interactive-hover);
+}
+
+/* Modal Styles */
+.aurora-question-modal,
+.aurora-create-insight-modal {
+  padding: 16px;
+}
+
+.aurora-modal-quote {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-left: 4px solid var(--text-accent);
+  background: var(--background-secondary);
+}
+
+.aurora-modal-question {
+  font-size: 1.1em;
+  font-weight: 500;
+  line-height: 1.6;
+  padding: 16px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+}
+
+.aurora-prompt-section {
+  margin-bottom: 24px;
+  padding: 12px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+}
+
+.aurora-prompt-text {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .aurora-insight-panel {
+    padding: 12px;
+  }
+
+  .aurora-insight-item,
+  .aurora-question-item {
+    padding: 10px;
+  }
+}
