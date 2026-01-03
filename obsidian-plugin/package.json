@@ -1,6 +1,6 @@
 {
   "name": "aurora-ontology",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Personal Ontology System - Question-centered RAG for personal knowledge management",
   "main": "main.js",
   "scripts": {

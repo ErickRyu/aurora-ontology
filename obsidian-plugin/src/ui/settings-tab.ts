@@ -157,7 +157,7 @@ export class AuroraOntologySettingTab extends PluginSettingTab {
       text: 'Aurora Ontology is a Personal Ontology System that uses Question-centered RAG to help you explore connections between your Insights.',
     });
     containerEl.createEl('p', {
-      text: 'Version: 0.1.0',
+      text: 'Version: 0.2.0',
       cls: 'setting-item-description',
     });
   }
